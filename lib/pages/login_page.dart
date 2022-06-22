@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:projeto01/components/login/custom_login_button_component.dart';
+import 'package:projeto01/widgets/custom_text_field_widget.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -19,44 +21,19 @@ class LoginPage extends StatelessWidget {
               Icons.people,
               size: MediaQuery.of(context).size.height * 0.2,
             ),
-            TextField(
-              decoration: const InputDecoration(
-                label: Text('Login'),
-              ),
+            CustomTextFieldWidget(
+              label: 'Login',
               onChanged: _controller.setLogin,
             ),
-            TextField(
-              decoration: const InputDecoration(
-                label: Text('Senha'),
-              ),
-              obscureText: true,
+            CustomTextFieldWidget(
+              label: 'Senha',
               onChanged: _controller.setPass,
+              obscureText: true,
             ),
             const SizedBox(
               height: 15,
             ),
-            ValueListenableBuilder<bool>(
-              valueListenable: _controller.inLoader,
-              builder: (_, inLoader, __) => inLoader
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: () {
-                        _controller.auth().then((value) {
-                          if (value) {
-                            Navigator.of(context).pushReplacementNamed('/home');
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Falha ao realizar login'),
-                                duration: Duration(seconds: 5),
-                              ),
-                            );
-                          }
-                        });
-                      },
-                      child: const Text('Login'),
-                    ),
-            ),
+            CustomLoginButtonComponent(loginController: _controller),
           ],
         ),
       ),
